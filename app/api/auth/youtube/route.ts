@@ -45,6 +45,14 @@ export async function POST(req: Request) {
     });
 
     const channel = response.data.items?.[0];
+    
+    // Add these console.log statements
+    console.log('Channel Details:', {
+      title: channel?.snippet?.title,
+      description: channel?.snippet?.description,
+      customUrl: channel?.snippet?.customUrl,
+      thumbnails: channel?.snippet?.thumbnails
+    });
 
     if (!channel) {
       return NextResponse.json(

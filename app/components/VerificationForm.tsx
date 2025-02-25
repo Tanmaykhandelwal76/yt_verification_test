@@ -15,7 +15,7 @@ export default function VerificationForm({ onClose }: VerificationFormProps) {
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [success, setSuccess] = useState(false);
+  const [success, setSuccess] = useState<{ name: string } | false>(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -48,7 +48,7 @@ export default function VerificationForm({ onClose }: VerificationFormProps) {
         throw new Error(data.message || 'Verification failed');
       }
 
-      setSuccess(true);
+      setSuccess({ name: data.channel.name });
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Something went wrong');
     } finally {
@@ -65,12 +65,22 @@ export default function VerificationForm({ onClose }: VerificationFormProps) {
 
   if (success) {
     return (
-      <div className="bg-white p-6 rounded-lg shadow-lg">
-        <h2 className="text-2xl font-bold text-green-600 mb-4">Verification Successful!</h2>
-        <p className="mb-4">Your YouTube channel has been successfully verified.</p>
+      <div className="bg-white p-6 rounded-lg shadow-lg text-center">
+        <div className="mb-4">
+          <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto">
+            <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+            </svg>
+          </div>
+        </div>
+        <h2 className="text-2xl font-bold text-green-600 mb-2">Channel Verified!</h2>
+        <div className="bg-gray-50 rounded-lg p-4 mb-4">
+          <p className="text-gray-600 mb-1">Channel Name:</p>
+          <p className="text-xl font-semibold">{success.name}</p>
+        </div>
         <button
           onClick={onClose}
-          className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded"
+          className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-6 rounded-lg transition-colors"
         >
           Close
         </button>
@@ -139,4 +149,4 @@ export default function VerificationForm({ onClose }: VerificationFormProps) {
       </form>
     </div>
   );
-} 
+}
